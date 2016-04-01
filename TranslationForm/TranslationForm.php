@@ -97,7 +97,10 @@ class TranslationForm implements TranslationFormInterface
         // Check existing
         foreach ($formFields as $field) {
             if (!property_exists($class, $field)) {
-                throw new \Exception("Field '". $field ."' doesn't exist in ". $class);
+                $getter = 'get' . ucfirst($field);
+                if (!method_exists($class, $getter)) {
+                    throw new \Exception("Field '" . $field . "' doesn't exist in " . $class);
+                }
             }
         }
 
